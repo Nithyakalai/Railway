@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RailOps - Sign Up</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.brand {
+    text-align: center;
+    margin-bottom: 28px;
+    color: white;
+}
+.brand .icon { font-size: 2.5rem; margin-bottom: 6px; }
+.brand h1 { font-size: 1.8rem; font-weight: 700; }
+.brand p { font-size: 0.9rem; opacity: 0.7; margin-top: 2px; }
+.box {
+    background: white;
+    padding: 36px;
+    border-radius: 16px;
+    width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.box h2 {
+    font-size: 1.25rem;
+    color: #0f172a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.field { margin-bottom: 14px; }
+.field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+.field input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    transition: border-color 0.2s;
+    background: white;
+}
+.field input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.role-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.role-toggle label {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #64748b;
+    transition: all 0.2s;
+}
+.role-toggle input { display: none; }
+.role-toggle input:checked + label {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 6px;
+}
+button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+}
+.footer {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+.footer a { color: #2563eb; font-weight: 600; }
+.conditional { display: none; }
+.conditional.active { display: block; }
+.error {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.hint {
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    margin-bottom: 14px;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="brand">
+    <div class="icon">🚆</div>
+    <h1>RailOps</h1>
+    <p>Create your account</p>
+</div>
+
+<div class="box">
+    <h2>Sign Up</h2>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" id="signupForm">
+
+        <div class="role-toggle">
+            <input type="radio" name="role" value="PASSENGER" id="rolePassenger" checked>
+            <label for="rolePassenger">🧳 Passenger</label>
+            <input type="radio" name="role" value="EMPLOYEE" id="roleEmployee">
+            <label for="roleEmployee">👷 Employee</label>
+        </div>
+
+        <!-- Passenger fields -->
+        <div id="passengerFields" class="conditional active">
+            <div class="field">
+                <label>Full Name</label>
+                <input name="name" placeholder="Enter your full name">
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input name="email" type="email" placeholder="your@email.com">
+            </div>
+            <div class="field">
+                <label>Phone</label>
+                <input name="phone" placeholder="Phone number">
+            </div>
+        </div>
+
+        <!-- Employee hint -->
+        <div id="employeeHint" class="conditional">
+            <div class="hint">
+                Use your Employee ID (e.g. EMP101) as your username
+            </div>
+        </div>
+
+        <div class="field">
+            <label id="usernameLabel">Username</label>
+            <input name="username" id="usernameInput" placeholder="Choose a username" required>
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Choose a password" required>
+        </div>
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <div class="footer">
+        Already have an account? <a href="/">Sign in</a>
+    </div>
+</div>
+
+<script>
+const radios = document.querySelectorAll('input[name="role"]');
+const pFields = document.getElementById('passengerFields');
+const eHint = document.getElementById('employeeHint');
+const usernameLabel = document.getElementById('usernameLabel');
+const usernameInput = document.getElementById('usernameInput');
+
+radios.forEach(r => r.addEventListener('change', () => {
+    if (r.value === 'EMPLOYEE' && r.checked) {
+        pFields.classList.remove('active');
+        eHint.classList.add('active');
+        usernameLabel.textContent = 'Employee ID';
+        usernameInput.placeholder = 'Enter your Employee ID (e.g. EMP101)';
+    } else if (r.value === 'PASSENGER' && r.checked) {
+        eHint.classList.remove('active');
+        pFields.classList.add('active');
+        usernameLabel.textContent = 'Username';
+        usernameInput.placeholder = 'Choose a username';
+    }
+}));
+</script>
+
+</body>
+</html>

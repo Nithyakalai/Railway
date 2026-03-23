@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RailOps - My Reservations</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <div class="sidebar">
+        <div class="brand"><span>🚆</span> RailOps</div>
+        <ul>
+            <li onclick="location.href='/passenger'">📊 Dashboard</li>
+            <li class="active" onclick="location.href='/reservations'">🎫 My Reservations</li>
+            <li onclick="location.href='/logout'">🚪 Logout</li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <h1 class="page-title">My Reservations</h1>
+
+        <div class="card">
+            {% if data and data|length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th>Train No</th>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Seats</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for r in data %}
+                <tr>
+                    <td><span class="badge badge-blue">{{ r.train_no }}</span></td>
+                    <td>{{ r.date }}</td>
+                    <td>{{ r.from_station }}</td>
+                    <td>{{ r.to_station }}</td>
+                    <td>{{ r.seats }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">🎫</div>
+                <p>No reservations yet. Search and book trains from the dashboard.</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

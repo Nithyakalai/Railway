@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RailOps - Employee Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <div class="sidebar">
+        <div class="brand"><span>🚆</span> RailOps</div>
+        <ul>
+            <li class="active">📊 Dashboard</li>
+            <li>🚂 My Trains</li>
+            <li><a href="/logout">🚪 Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <h1 class="page-title">Employee Dashboard</h1>
+
+        <!-- Employee Details -->
+        <div class="card">
+            <h3>👷 Employee Details</h3>
+            {% if emp %}
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Employee ID</label>
+                    <span>{{ emp.emp_id }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Name</label>
+                    <span>{{ emp.name }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Role</label>
+                    <span><span class="badge badge-blue">{{ emp.role }}</span></span>
+                </div>
+                <div class="detail-item">
+                    <label>Station</label>
+                    <span>{{ emp.station_code or 'N/A' }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Salary</label>
+                    <span>₹{{ '{:,}'.format(emp.salary) if emp.salary else 'N/A' }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Age</label>
+                    <span>{{ emp.age or 'N/A' }}</span>
+                </div>
+                {% if emp.role == 'Driver' and role_details %}
+                <div class="detail-item">
+                    <label>Driving Hours</label>
+                    <span>{{ role_details.driving_hours or 'N/A' }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>License No</label>
+                    <span>{{ role_details.license_no or 'N/A' }}</span>
+                </div>
+                {% elif emp.role == 'Coach Attendant' and role_details %}
+                <div class="detail-item">
+                    <label>Languages Spoken</label>
+                    <span>{{ role_details.language or 'N/A' }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>No employee data available</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Assigned Trains -->
+        <div class="card">
+            <h3>🚂 Assigned Trains</h3>
+            {% if trains and trains|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Train No</th>
+                        <th>Train Name</th>
+                        <th>Next Scheduled Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for t in trains %}
+                    <tr>
+                        <td><span class="badge badge-blue">{{ t.train_no }}</span></td>
+                        <td>{{ t.train_name }}</td>
+                        <td><span class="badge badge-green">{{ t.next_date }}</span></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>No upcoming train assignments</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

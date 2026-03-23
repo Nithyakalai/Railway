@@ -1,0 +1,13 @@
+<select name="from" id="from">
+    <option value="">From Station</option>
+    {% for s in stations %}
+    <option value="{{ s.station_code }}">{{ s.station_code }}</option>
+    {% endfor %}
+</select>
+
+<select name="to" id="to">
+    <option value="">To Station</option>
+    {% for s in stations %}
+    <option value="{{ s.station_code }}">{{ s.station_code }}</option>
+    {% endfor %}
+</select>
