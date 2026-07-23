@@ -288,7 +288,6 @@ def employee():
         JOIN TRAIN t ON at.train_no = t.train_no
         JOIN TRAIN_INSTANCE ti ON t.train_no = ti.train_no
         WHERE at.emp_id = ?
-          AND ti.date >= date('now')
         GROUP BY t.train_no, t.train_name
         """, (user['Ref_id'],)) or []
 
